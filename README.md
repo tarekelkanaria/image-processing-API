@@ -30,6 +30,15 @@ To run Eslint Package with typescript configurations to make sure the code is co
 
 Tarek Elkanaria   
 
+## EndPoints   
+
+- **http://localhost:3001**   
+   **Must give _"Home Page"_ message**   
+- **http://localhost:3001/images**    
+   **Must give _"You have the following Error: Error"_ message**   
+- **http://localhost:3001/images?filename=fjord&width=300&height=300**    
+  **Must display the required image with specified width and height**   
+
 ## Description   
 
 After  start the server, open your browser with the URL:  
@@ -41,7 +50,6 @@ you can specify the width and height by any number you want for your image.
 the result URL will be something like that:  
 **http://localhost:3001/images?filename=fjord&width=300&height=300**  
 The final result should be the specified image with width and height on the screen and also in `thumb` directory.   
-
 ## Requirements   
 
 Meets Specifications Criteria for udacity instructions.
