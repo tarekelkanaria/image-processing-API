@@ -27,7 +27,11 @@ images.get('/', (req, res): void => {
       if (
         (cookieFile.filename as unknown as string) === req.query.filename &&
         (cookieFile.height as unknown as string) === req.query.height &&
-        (cookieFile.width as unknown as string) === req.query.width
+        (cookieFile.width as unknown as string) === req.query.width &&
+        (path.join(
+          __dirname,
+          `../../../thumb/${req.query.filename}`
+        ) as unknown as boolean) === true
       ) {
         // if it's the same send the file in cookies and stop.
         res.sendFile(cookieFile.file);
