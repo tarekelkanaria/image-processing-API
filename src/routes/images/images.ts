@@ -1,9 +1,11 @@
-import express from 'express';
+import * as express from 'express';
+import { Request, Response } from 'express';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import resizeImage from '../../utilities/resize';
 import cookieParser from 'cookie-parser';
 import ImageCookies from '../../utilities/cookies';
+import { OutputInfo } from 'sharp';
 
 // Define the images route using express
 const images = express.Router();
@@ -12,7 +14,7 @@ const imagesPath = './assets/images';
 // to check the cookies if it's exist
 images.use(cookieParser());
 // Main method for images route using get
-images.get('/', (req, res): void => {
+images.get('/', (req: Request, res: Response): void => {
   try {
     // destructuring url params using request object
     const { filename, width, height } = req.query;
@@ -59,7 +61,7 @@ images.get('/', (req, res): void => {
           });
         })
         // to specify the requested image path and send it to resizeImage module to apply 'sharp' functionality
-        .then(async (allImages: string[]) => {
+        .then(async (allImages: string[]): Promise<OutputInfo> => {
           const requestedImagePath = path.join(
             __dirname,
             `../../../thumb/${allImages[0]}`
@@ -72,7 +74,7 @@ images.get('/', (req, res): void => {
           );
         })
         // Take the returned image path from resize image module and send it by response object
-        .then((returnedPath): void => {
+        .then((returnedPath: OutputInfo): void => {
           res.sendFile(returnedPath as unknown as string);
           res.cookie('filename', filename);
           res.cookie('width', imageWidth);
@@ -80,14 +82,14 @@ images.get('/', (req, res): void => {
           res.cookie('file', returnedPath);
         })
         // Handle any error throughout the process
-        .catch((err) => {
+        .catch((err: Error) => {
           res
             .status(500)
-            .send(`You have the following Error: ${err as string}`);
+            .send(`You have the following Error: ${err as unknown as string}`);
         });
     };
     void convert(imageName, imageWidth, imageHeight);
-  } catch (err) {
+  } catch (err: unknown) {
     res.status(500).send(`You have the following Error: ${err as string}`);
   }
 });
